@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "817757548805",
+    "project_id": "flash-chat-33071",
+    "storage_bucket": "flash-chat-33071.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817757548805:android:5f62b16e7f37d2faaa076c",
+        "android_client_info": {
+          "package_name": "aeladrin.flash_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817757548805-9ev06k5p8di0un536vdej7ad3k80uv71.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8S9puI9J_balfRyZWYx_kIwD4fYiMg_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817757548805-9ev06k5p8di0un536vdej7ad3k80uv71.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
