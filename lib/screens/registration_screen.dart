@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flash_chat/widgets/RoundedButton.dart';
 import 'package:flutter/material.dart';
 
@@ -63,14 +65,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             RoundedButton(
               text: 'Register',
               color: Colors.blueAccent,
-              onPressed: () {
-                print(email);
-                print(password);
-              },
+              onPressed: onRegisterPressed,
             ),
           ],
         ),
       ),
     );
+  }
+
+  void onRegisterPressed() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      Navigator.pushNamed(context, ChatScreen.id);
+    } catch (e) {
+      print(e);
+    }
   }
 }
