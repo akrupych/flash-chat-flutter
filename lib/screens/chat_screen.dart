@@ -22,11 +22,7 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         leading: null,
         actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                //Implement logout functionality
-              }),
+          IconButton(icon: Icon(Icons.logout), onPressed: onLogoutPressed),
         ],
         title: Text('⚡️Chat'),
         backgroundColor: Colors.lightBlueAccent,
@@ -65,5 +61,14 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  void onLogoutPressed() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pop(context);
+    } catch (e) {
+      print(e);
+    }
   }
 }
