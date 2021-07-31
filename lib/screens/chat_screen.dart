@@ -124,21 +124,30 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isMine = FirebaseAuth.instance.currentUser.email == sender;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          Text(
-            sender,
-            style: TextStyle(color: Colors.grey),
+          Visibility(
+            visible: !isMine,
+            child: Text(
+              sender,
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
           SizedBox(
             height: 4,
           ),
           Material(
-            color: Colors.blueAccent,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: isMine ? Colors.lightBlueAccent : Colors.blueAccent,
+            borderRadius: isMine
+                ? BorderRadius.all(Radius.circular(20))
+                : BorderRadius.all(Radius.circular(20))
+                    .copyWith(topLeft: Radius.zero),
+            elevation: 4,
             child: Padding(
               padding: const EdgeInsets.all(12),
               child: Text(
