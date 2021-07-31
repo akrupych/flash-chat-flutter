@@ -14,6 +14,13 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   bool isLoading = false;
   String message;
+  List<Map<String, dynamic>> messages;
+
+  @override
+  void initState() {
+    super.initState();
+    loadMessages();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +89,16 @@ class _ChatScreenState extends State<ChatScreen> {
     FirebaseFirestore.instance.collection("messages").add({
       "text": message,
       "sender": FirebaseAuth.instance.currentUser.email,
+    });
+  }
+
+  loadMessages() {
+    FirebaseFirestore.instance
+        .collection("messages")
+        .snapshots()
+        .forEach((element) {
+      messages = element.docs.map((e) => e.data()).toList();
+      print(messages);
     });
   }
 }
