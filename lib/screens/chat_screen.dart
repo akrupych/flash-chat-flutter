@@ -32,19 +32,9 @@ class _ChatScreenState extends State<ChatScreen> {
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: FirebaseFirestore.instance
-                      .collection("messages")
-                      .snapshots(),
-                  builder: (context, snapshot) => Expanded(
-                        child: ListView(
-                          children: snapshot.data.docs
-                              .map((e) => Text(e.data()["text"]))
-                              .toList(),
-                        ),
-                      )),
+              MessageList(),
               Container(
                 decoration: kMessageContainerDecoration,
                 child: Row(
@@ -95,5 +85,67 @@ class _ChatScreenState extends State<ChatScreen> {
       "text": message,
       "sender": FirebaseAuth.instance.currentUser.email,
     });
+  }
+}
+
+class MessageList extends StatelessWidget {
+  const MessageList({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance.collection("messages").snapshots(),
+        builder: (context, snapshot) => Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView(
+                  children: snapshot.data.docs
+                      .map((e) => Message(
+                            text: e.data()["text"],
+                            sender: e.data()["sender"],
+                          ))
+                      .toList(),
+                ),
+              ),
+            ));
+  }
+}
+
+class Message extends StatelessWidget {
+  final String text;
+  final String sender;
+
+  const Message({this.text, this.sender});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            sender,
+            style: TextStyle(color: Colors.grey),
+          ),
+          SizedBox(
+            height: 4,
+          ),
+          Material(
+            color: Colors.blueAccent,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                text,
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
