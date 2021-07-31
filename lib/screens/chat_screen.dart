@@ -17,12 +17,6 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Map<String, dynamic>> messages;
 
   @override
-  void initState() {
-    super.initState();
-    loadMessages();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -40,6 +34,15 @@ class _ChatScreenState extends State<ChatScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection("messages")
+                      .snapshots(),
+                  builder: (context, snapshot) => Column(
+                        children: snapshot.data.docs
+                            .map((e) => Text(e.data()["text"]))
+                            .toList(),
+                      )),
               Container(
                 decoration: kMessageContainerDecoration,
                 child: Row(
@@ -89,16 +92,6 @@ class _ChatScreenState extends State<ChatScreen> {
     FirebaseFirestore.instance.collection("messages").add({
       "text": message,
       "sender": FirebaseAuth.instance.currentUser.email,
-    });
-  }
-
-  loadMessages() {
-    FirebaseFirestore.instance
-        .collection("messages")
-        .snapshots()
-        .forEach((element) {
-      messages = element.docs.map((e) => e.data()).toList();
-      print(messages);
     });
   }
 }
