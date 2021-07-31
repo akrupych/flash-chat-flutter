@@ -38,10 +38,12 @@ class _ChatScreenState extends State<ChatScreen> {
                   stream: FirebaseFirestore.instance
                       .collection("messages")
                       .snapshots(),
-                  builder: (context, snapshot) => Column(
-                        children: snapshot.data.docs
-                            .map((e) => Text(e.data()["text"]))
-                            .toList(),
+                  builder: (context, snapshot) => Expanded(
+                        child: ListView(
+                          children: snapshot.data.docs
+                              .map((e) => Text(e.data()["text"]))
+                              .toList(),
+                        ),
                       )),
               Container(
                 decoration: kMessageContainerDecoration,
