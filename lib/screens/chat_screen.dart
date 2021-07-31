@@ -15,6 +15,7 @@ class _ChatScreenState extends State<ChatScreen> {
   bool isLoading = false;
   String message;
   List<Map<String, dynamic>> messages;
+  final messageTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           message = value;
                         },
                         decoration: kMessageTextFieldDecoration,
+                        controller: messageTextController,
                       ),
                     ),
                     FlatButton(
@@ -81,6 +83,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   onSendPressed() {
+    messageTextController.clear();
     FirebaseFirestore.instance.collection("messages").add({
       "text": message,
       "sender": FirebaseAuth.instance.currentUser.email,
