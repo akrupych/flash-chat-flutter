@@ -87,6 +87,7 @@ class _ChatScreenState extends State<ChatScreen> {
     FirebaseFirestore.instance.collection("messages").add({
       "text": message,
       "sender": FirebaseAuth.instance.currentUser.email,
+      "timestamp": DateTime.now().millisecondsSinceEpoch,
     });
   }
 }
@@ -99,11 +100,15 @@ class MessageList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance.collection("messages").snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection("messages")
+            .orderBy("timestamp", descending: true)
+            .snapshots(),
         builder: (context, snapshot) => Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListView(
+                  reverse: true,
                   children: snapshot.data.docs
                       .map((e) => Message(
                             text: e.data()["text"],
